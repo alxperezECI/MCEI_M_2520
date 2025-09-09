@@ -22,5 +22,6 @@ int main(int argc, char** argv){
     std::cout << "t = " << tiempo << " vel = " << velo << std::endl;
     tiempo = tiempo + 2.0;
   }while( ( velo - veloant) > 0.0001 );
+  std::cout << "Cambiado desde EciStudent" << std::endl;
   return 0;
 }
