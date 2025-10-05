@@ -1,0 +1,66 @@
+\documentclass[spanish,10pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{babel}
+\title{Taller: Comparación experimental de métodos de búsqueda de raíces (1D) con GSL}
+\author{Alexander Pérez Ruiz}
+\begin{document}
+	\maketitle
+	
+	\section{Objetivos }
+	
+	\begin{itemize}
+		\item Comparar en la práctica los métodos de búsqueda de raíces más usados (bisección, falsa posición, secante, Brent, Newton) en términos de:
+		\begin{itemize}
+			\item convergencia (velocidad y órdenes)
+			\item robustez (sensibilidad a la elección inicial / bracketing)
+			\item número de evaluaciones de $f$ y $f'$
+			\item estabilidad numérica
+			\item tiempo de cómputo en condiciones realistas.
+		\end{itemize}
+	
+	\item Desarrollar habilidad para instrumentar experimentos numéricos (medir, graficar, interpretar).
+	
+	\item Formular conclusiones cualitativas y cuantitativas que no puedan obtenerse únicamente pidiendo respuestas a una IA (por ejemplo: comportamiento en hardware limitado, variabilidad estadística entre ejecuciones con ruido en parámetros, intuiciones sobre cuándo preferir un método en ingeniería real).
+\end{itemize}
+\section{Funciones a evaluar}
+\begin{enumerate}
+	\item $f_1(x)=x^3-6x^2+11x-6$
+	\item $f_2(x)=(x-1)^2(x-2)$
+	\item $f_3(x)=tanh(10(x-0.1))-0.5$
+	\item $f_4(x)=sin(50x)/x$
+	\item $f_5(x)=|x-0,5|-0,1$
+\end{enumerate}
+
+\section{Experimentos}
+Para cada función y cada método:
+\begin{itemize}
+	\item Preparar: elegir intervalos/brackets o puntos iniciales razonables (documentar elección).
+	\item Criterios de parada: tolerancia en $|f(x)|<$~ tol y $|\Delta x|<$~ tol. Registrar ambos.
+	\item Medir:
+	\begin{itemize}
+		\item número de iteraciones,
+		\item número de evaluaciones de $f$ y de $f'$,
+		\item tiempo de CPU,
+		\item si converge o no (y en cuántas iteraciones máximas — por ejemplo 200).
+	\end{itemize}
+	\item Variación de inicialización: repetir con varias semillas de inicialización.
+\end{itemize}
+
+
+\section{Preguntas orientadoras}
+\begin{itemize}
+	\item Para cada función, ¿qué método recomiendan en producción (por fiabilidad y coste) y por qué? (fundamentar con datos experimentales).
+
+	\item ¿Dónde observan discrepancias entre la teoría (orden de convergencia) y los resultados prácticos? Expliquen las razones (redondeo, límites de representación, evaluaciones finitas, mala inicialización).
+	
+	\item ¿Qué fallos o inconsistencias inesperadas encontraron (p. ej. saltos, NaNs, convergencias a raíces falsas) y cómo los diagnosticarías y arreglarías en código de producción?
+	
+	\item ¿Cómo afecta el costo de evaluar $f$ (p. ej. si $f$ es una simulación costosa) la elección del método? Diseñen una regla práctica para elegir el método en función del costo de evaluación relativa de $f$ y $f'$.
+	
+	\item ¿Qué precauciones adicionales implementarían en una librería real (logging, límites de iteración, backoffs, switches entre métodos)? Proponer un pseudocódigo para un "root-finder robusto".
+	
+	\item  Si el hardware es limitado (p. ej. microcontrolador con punto flotante simple), ¿qué métodos preferirían y por qué? Comparar con resultados en PC.
+	
+	\item Describe un experimento de "falsificación" que mostraría que un resultado empírico tuyo no es un artefacto de una mala instrumentación o azar.
+\end{itemize}
+\end{document}
